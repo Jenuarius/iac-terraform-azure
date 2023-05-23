@@ -1,10 +1,10 @@
 resource "azurerm_resource_group" "example" {
-  name     = "azure-functions-cptest-rg"
+  name     = var.resource_group_name
   location = "West Europe"
 }
 
 resource "azurerm_storage_account" "example" {
-  name                     = "functionsapptestsa"
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.example.name
   location                 = azurerm_resource_group.example.location
   account_tier             = "Standard"
@@ -12,7 +12,7 @@ resource "azurerm_storage_account" "example" {
 }
 
 resource "azurerm_app_service_plan" "example" {
-  name                = "azure-functions-test-service-plan"
+  name                = var.app_service_plan_name
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
   kind                = "Linux"
@@ -25,7 +25,7 @@ resource "azurerm_app_service_plan" "example" {
 }
 
 resource "azurerm_function_app" "example" {
-  name                       = "test-azure-functions"
+  name                       = var.function_app_name
   location                   = azurerm_resource_group.example.location
   resource_group_name        = azurerm_resource_group.example.name
   app_service_plan_id        = azurerm_app_service_plan.example.id
@@ -36,7 +36,7 @@ resource "azurerm_function_app" "example" {
 }
 
 resource "azurerm_linux_function_app" "example" {
-  name                = "example-linux-function-app"
+  name                = var.linux_function_app_name
   resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
 
@@ -48,7 +48,7 @@ resource "azurerm_linux_function_app" "example" {
 }
 
 resource "azurerm_function_app_function" "example" {
-  name            = "example-function-app-function"
+  name            = var.function_name
   function_app_id = azurerm_linux_function_app.example.id
   language        = "Python"
   test_data = jsonencode({
